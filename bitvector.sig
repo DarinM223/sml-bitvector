@@ -1,18 +1,4 @@
-signature MUTABLE_BITVECTOR =
-sig
-  type t
-
-  val create: int -> t
-  val set: int -> bool -> t -> unit
-  val get: int -> t -> bool
-  val andd: t -> t -> unit
-  val or: t -> t -> unit
-  val not: t -> unit
-  val any: t -> bool
-  val all: t -> bool
-end
-
-signature IMMUTABLE_BITVECTOR =
+signature BIT_VECTOR =
 sig
   type t
 
