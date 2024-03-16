@@ -31,11 +31,17 @@ struct
       val i' = i div WordN.wordSize
       val combine = fn (x, y) =>
         if b then WordN.orb (x, y) else WordN.andb (x, WordN.notb y)
-      val setbit = WordN.<< (one, Word.fromInt (i mod WordN.wordSize))
+      val mask = WordN.<< (one, Word.fromInt (i mod WordN.wordSize))
     in
-      Array.update (#bits v, i', combine (Array.sub (#bits v, i'), setbit))
+      Array.update (#bits v, i', combine (Array.sub (#bits v, i'), mask))
     end
-  fun get i v = raise Fail ""
+  fun get i (v: t) =
+    let
+      val i' = i div WordN.wordSize
+      val mask = WordN.<< (one, Word.fromInt (i mod WordN.wordSize))
+    in
+      WordN.andb (Array.sub (#bits v, i'), mask) <> zero
+    end
 
   structure AndOp = BitArrayOp (open WordN val opp = WordN.andb)
   structure OrOp = BitArrayOp (open WordN val opp = WordN.orb)
