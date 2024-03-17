@@ -4,3 +4,4 @@ $(SML_LIB)/basis/basis.mlb
 ../lib/github.com/DarinM223/unit-test/example/app/generic.mlb
 ../sml-bitvector.mlb
 simple-tests.sml
+quickcheck-tests.sml

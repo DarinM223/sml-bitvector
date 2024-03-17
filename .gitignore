@@ -1,6 +1,4 @@
 build.sml
 sml-bitvector
 lib/
-tests/
-!*/tests/*.mlb
-!*/tests/*.sml
+/tests/tests
