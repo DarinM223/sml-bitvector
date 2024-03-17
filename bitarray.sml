@@ -63,8 +63,11 @@ struct
         );
       remainder <= 0
       orelse
-      Array.sub (#bits v, endIndex)
-      = WordN.- (WordN.<< (one, Word.fromInt remainder), one)
+      let
+        val w = Array.sub (#bits v, endIndex)
+      in
+        w = WordN.orb (WordN.- (WordN.<< (one, Word.fromInt remainder), one), w)
+      end
     end
     handle Break => false
   val any: t -> bool = not o Array.all (fn w => w = zero) o #bits
