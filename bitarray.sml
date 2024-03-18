@@ -43,6 +43,46 @@ struct
       WordN.andb (Array.sub (#bits v, i'), mask) <> zero
     end
 
+  fun alignTo (value, align) =
+    (value + align - 1) div align * align
+
+  fun setRange i j value (v: t) =
+    let
+      val orEquals = fn (a, b) =>
+        Array.update (#bits v, a, WordN.orb (Array.sub (#bits v, a), b))
+      val andEqualsNot = fn (a, b) =>
+        Array.update (#bits v, a, WordN.andb
+          (Array.sub (#bits v, a), WordN.notb b))
+      val set = if value then orEquals else andEqualsNot
+    in
+      if i = j then
+        ()
+      else if i div WordN.wordSize = j div WordN.wordSize then
+        let
+          val imask = WordN.<< (one, Word.fromInt (i mod WordN.wordSize))
+          val jmask = WordN.<< (one, Word.fromInt (j mod WordN.wordSize))
+          val mask = WordN.- (jmask, imask)
+        in
+          set (i div WordN.wordSize, mask)
+        end
+      else
+        let
+          val prefixMask = WordN.<<
+            (WordN.notb zero, Word.fromInt (i mod WordN.wordSize))
+          val postfixMask = WordN.-
+            (WordN.<< (one, Word.fromInt (j mod WordN.wordSize)), one)
+          val fillMask = if value then WordN.notb zero else zero
+          val () = set (i div WordN.wordSize, prefixMask)
+          val i = ref (alignTo (i, WordN.wordSize))
+        in
+          while (!i + WordN.wordSize <= j) do
+            ( Array.update (#bits v, !i div WordN.wordSize, fillMask)
+            ; i := !i + WordN.wordSize
+            );
+          if !i < j then set (!i div WordN.wordSize, postfixMask) else ()
+        end
+    end
+
   structure AndOp = BitArrayOp (open WordN val opp = WordN.andb)
   structure OrOp = BitArrayOp (open WordN val opp = WordN.orb)
   structure XorOp = BitArrayOp (open WordN val opp = WordN.xorb)
