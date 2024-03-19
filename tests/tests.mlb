@@ -3,5 +3,6 @@ $(SML_LIB)/basis/basis.mlb
 ../lib/github.com/DarinM223/extended-basis/extensions.mlb
 ../lib/github.com/DarinM223/generic/lib-all.mlb
 ../sml-bitvector.mlb
+tests.sml
 simple-tests.sml
 quickcheck-tests.sml
