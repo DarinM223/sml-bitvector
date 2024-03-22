@@ -1,3 +1,5 @@
+package github.com/DarinM223/sml-bitvector
+
 require {
   github.com/DarinM223/unit-test 0.0.2 #737f28800140dc3c1603fb132ac8efd12fa90096
 }
