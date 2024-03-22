@@ -121,12 +121,6 @@ structure Word8BitVector =
      val zero: Word8.word = 0w0
      val one: Word8.word = 0w1)
 
-structure Word16BitVector =
-  BitVectorFn
-    (structure WordN = Word16
-     val zero: Word16.word = 0w0
-     val one: Word16.word = 0w1)
-
 structure Word32BitVector =
   BitVectorFn
     (structure WordN = Word32

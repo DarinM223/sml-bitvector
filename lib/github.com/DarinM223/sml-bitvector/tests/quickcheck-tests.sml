@@ -27,7 +27,7 @@ val () =
   unitTests (title "Simple get and set quickcheck")
     (testAll (list bool) (fn l =>
        let
-         open Word16BitVector
+         open Word8BitVector
          val s = create (List.length l)
          val is = List.tabulate (List.length l, fn i => i)
          val zipped = ListPair.zip (is, l)

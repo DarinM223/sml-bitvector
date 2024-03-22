@@ -1,6 +1,4 @@
 Group is
   $/basis.cm
-  $/smlnj-lib.cm
-  bitarray.sig
   bitvector.sig
-  bitarray.sml
+  bitvector.sml
