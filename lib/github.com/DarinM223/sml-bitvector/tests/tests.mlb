@@ -1,0 +1,8 @@
+$(SML_LIB)/basis/basis.mlb
+../../unit-test/lib.mlb
+../../extended-basis/extensions.mlb
+../../generic/lib-all.mlb
+../sml-bitvector.mlb
+tests.sml
+simple-tests.sml
+quickcheck-tests.sml

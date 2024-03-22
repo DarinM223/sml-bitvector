@@ -1,4 +1,2 @@
 build.sml
-sml-bitvector
-lib/
-/tests/tests
+tests
