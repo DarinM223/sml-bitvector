@@ -1,5 +1,4 @@
 $(SML_LIB)/basis/basis.mlb
 $(SML_LIB)/smlnj-lib/Util/smlnj-lib.mlb
-bitarray.sig
 bitvector.sig
-bitarray.sml
+bitvector.sml

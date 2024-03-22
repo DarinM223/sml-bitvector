@@ -3,12 +3,13 @@ sig
   type t
 
   val create: int -> t
-  val set: int -> bool -> t
+  val set: int -> bool -> t -> unit
+  val setRange: int -> int -> bool -> t -> unit
   val get: int -> t -> bool
-  val andd: t -> t -> t
-  val or: t -> t -> t
-  val xor: t -> t -> t
-  val not: t -> t
+  val andd: t -> t -> unit
+  val or: t -> t -> unit
+  val xor: t -> t -> unit
+  val not: t -> unit
   val any: t -> bool
   val all: t -> bool
 end

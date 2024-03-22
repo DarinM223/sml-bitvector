@@ -4,7 +4,7 @@ val () =
   unitTests (title "Simple get and set")
     (test (fn () =>
        let
-         open Word8BitArray
+         open Word8BitVector
          val s = create 10
          val () = set 9 true s
          val () = set 0 true s
@@ -16,7 +16,7 @@ val () =
        end)) (title "any()")
     (test (fn () =>
        let
-         open Word8BitArray
+         open Word8BitVector
          val s = create 10
        in
          thatEq bool {expect = any s, actual = false};
@@ -25,7 +25,7 @@ val () =
        end)) (title "all() for bitarray that has remainder")
     (test (fn () =>
        let
-         open Word8BitArray
+         open Word8BitVector
          val s = create 10
        in
          thatEq bool {expect = all s, actual = false};
@@ -34,7 +34,7 @@ val () =
        end)) (title "setRange() for range inside same word")
     (test (fn () =>
        let
-         open Word8BitArray
+         open Word8BitVector
          val s = create 18
 
          val () = setRange 8 16 true s
@@ -56,7 +56,7 @@ val () =
        end)) (title "setRange() across words")
     (test (fn () =>
        let
-         open Word8BitArray
+         open Word8BitVector
          val s = create 32
          val () = setRange 4 28 true s
          val is = List.tabulate (32, fn i => get i s)

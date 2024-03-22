@@ -1,4 +1,4 @@
-functor BitArrayOp (include WORD val opp: word * word -> word) =
+functor BitVectorOp (include WORD val opp: word * word -> word) =
 struct
   type t = {length: int, bits: word array}
   local
@@ -12,8 +12,8 @@ struct
   end
 end
 
-functor BitArrayFn
-  (structure WordN: WORD val zero: WordN.word val one: WordN.word) :> BIT_ARRAY =
+functor BitVectorFn
+  (structure WordN: WORD val zero: WordN.word val one: WordN.word) :> BIT_VECTOR =
 struct
   type t = {length: int, bits: WordN.word array}
 
@@ -83,9 +83,9 @@ struct
         end
     end
 
-  structure AndOp = BitArrayOp (open WordN val opp = WordN.andb)
-  structure OrOp = BitArrayOp (open WordN val opp = WordN.orb)
-  structure XorOp = BitArrayOp (open WordN val opp = WordN.xorb)
+  structure AndOp = BitVectorOp (open WordN val opp = WordN.andb)
+  structure OrOp = BitVectorOp (open WordN val opp = WordN.orb)
+  structure XorOp = BitVectorOp (open WordN val opp = WordN.xorb)
   val andd = AndOp.run
   val or = OrOp.run
   val xor = XorOp.run
@@ -115,20 +115,20 @@ struct
   val not: t -> unit = Array.modify WordN.notb o #bits
 end
 
-structure Word8BitArray =
-  BitArrayFn
+structure Word8BitVector =
+  BitVectorFn
     (structure WordN = Word8
      val zero: Word8.word = 0w0
      val one: Word8.word = 0w1)
 
-structure Word16BitArray =
-  BitArrayFn
+structure Word16BitVector =
+  BitVectorFn
     (structure WordN = Word16
      val zero: Word16.word = 0w0
      val one: Word16.word = 0w1)
 
-structure Word32BitArray =
-  BitArrayFn
+structure Word32BitVector =
+  BitVectorFn
     (structure WordN = Word32
      val zero: Word32.word = 0w0
      val one: Word32.word = 0w1)

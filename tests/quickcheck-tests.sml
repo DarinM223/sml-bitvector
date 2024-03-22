@@ -5,7 +5,7 @@ fun pad init l1 l2 =
 
 fun testOp bitOp opp (xs, ys) =
   let
-    open Word8BitArray
+    open Word8BitVector
     val maxLen = Int.max (List.length xs, List.length ys)
     val (xs, ys) =
       if List.length xs < List.length ys then (pad false xs ys, ys)
@@ -27,7 +27,7 @@ val () =
   unitTests (title "Simple get and set quickcheck")
     (testAll (list bool) (fn l =>
        let
-         open Word16BitArray
+         open Word16BitVector
          val s = create (List.length l)
          val is = List.tabulate (List.length l, fn i => i)
          val zipped = ListPair.zip (is, l)
@@ -35,9 +35,9 @@ val () =
        in
          List.app (fn (i, b) => that (get i s = b)) zipped
        end)) (title "And quickcheck")
-    (testAll (sq (list bool)) (testOp Word8BitArray.andd (fn (a, b) =>
+    (testAll (sq (list bool)) (testOp Word8BitVector.andd (fn (a, b) =>
        a andalso b))) (title "Or quickcheck")
-    (testAll (sq (list bool)) (testOp Word8BitArray.or (fn (a, b) =>
+    (testAll (sq (list bool)) (testOp Word8BitVector.or (fn (a, b) =>
        a orelse b))) (title "Xor quickcheck")
-    (testAll (sq (list bool)) (testOp Word8BitArray.xor (fn (a, b) =>
+    (testAll (sq (list bool)) (testOp Word8BitVector.xor (fn (a, b) =>
        (a orelse b) andalso (not (a andalso b))))) $
