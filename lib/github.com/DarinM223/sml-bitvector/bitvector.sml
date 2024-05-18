@@ -26,6 +26,7 @@ struct
           , fn _ => zero
           )
     }
+  fun length ({length, ...}: t) = length
   fun set i b (v: t) =
     let
       val i' = i div WordN.wordSize
@@ -113,6 +114,15 @@ struct
   val any: t -> bool = not o Array.all (fn w => w = zero) o #bits
 
   val not: t -> unit = Array.modify WordN.notb o #bits
+
+  fun toString (t as {length, ...}: t) =
+    let
+      val result: bool list ref = ref []
+      val i = ref 0
+    in
+      while (!i < length) do (result := get (!i) t :: !result; i := !i + 1);
+      implode (map (fn true => #"1" | false => #"0") (!result))
+    end
 end
 
 structure Word8BitVector =
