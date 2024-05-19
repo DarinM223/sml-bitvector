@@ -70,7 +70,7 @@ val () =
          val () = thatEq (list bool) {expect = expected, actual = is}
        in
          ()
-       end))
+       end)) (title "Shift right 1 bit")
     (test (fn () =>
        let
          open Word8BitVector
@@ -81,7 +81,7 @@ val () =
          val expected = "0100000001"
        in
          thatEq string {expect = expected, actual = toString s}
-       end))
+       end)) (title "Shift left 1 bit")
     (test (fn () =>
        let
          open Word8BitVector
@@ -90,6 +90,26 @@ val () =
          val () = set 9 true s
          val () = shl 1 s
          val expected = "0000000100"
+       in
+         thatEq string {expect = expected, actual = toString s}
+       end)) (title "Shift right 10 bits")
+    (test (fn () =>
+       let
+         open Word8BitVector
+         val s = create 18
+         val () = List.app (fn i => set i true s) [2, 4, 5, 8, 10, 12, 13, 16]
+         val () = shr 10 s
+         val expected = "000000000001001101"
+       in
+         thatEq string {expect = expected, actual = toString s}
+       end)) (title "Shift left 10 bits")
+    (test (fn () =>
+       let
+         open Word8BitVector
+         val s = create 18
+         val () = List.app (fn i => set i true s) [2, 4, 5, 8, 10, 12, 13, 16]
+         val () = shl 10 s
+         val expected = "001101000000000000"
        in
          thatEq string {expect = expected, actual = toString s}
        end)) $
