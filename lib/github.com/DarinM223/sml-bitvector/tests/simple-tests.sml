@@ -70,4 +70,26 @@ val () =
          val () = thatEq (list bool) {expect = expected, actual = is}
        in
          ()
+       end))
+    (test (fn () =>
+       let
+         open Word8BitVector
+         val s = create 10
+         val () = set 1 true s
+         val () = set 9 true s
+         val () = shr 1 s
+         val expected = "0100000001"
+       in
+         thatEq string {expect = expected, actual = toString s}
+       end))
+    (test (fn () =>
+       let
+         open Word8BitVector
+         val s = create 10
+         val () = set 1 true s
+         val () = set 9 true s
+         val () = shl 1 s
+         val expected = "0000000100"
+       in
+         thatEq string {expect = expected, actual = toString s}
        end)) $
