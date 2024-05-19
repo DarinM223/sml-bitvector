@@ -115,6 +115,85 @@ struct
 
   val not: t -> unit = Array.modify WordN.notb o #bits
 
+
+  local
+    fun wordShl (n, v: t) =
+      let
+        val slice = ArraySlice.slice (#bits v, 0, SOME (length v - n))
+        val rest = ArraySlice.slice (#bits v, 0, SOME n)
+      in
+        ArraySlice.copy {src = slice, dst = #bits v, di = n};
+        ArraySlice.modify (fn _ => zero) rest
+      end
+    fun wordShr (n, v: t) =
+      let
+        val slice = ArraySlice.slice (#bits v, n, SOME (length v))
+        val rest = ArraySlice.slice (#bits v, length v - n, SOME (length v))
+      in
+        ArraySlice.copy {src = slice, dst = #bits v, di = 0};
+        ArraySlice.modify (fn _ => zero) rest
+      end
+
+    fun maskTrailingOnes n =
+      WordN.>> (WordN.fromInt ~1, Word.fromInt (WordN.wordSize - n))
+    fun maskLeadingOnes n =
+      WordN.notb (maskTrailingOnes (WordN.wordSize - n))
+  in
+    fun shl n (v: t) =
+      let
+        val () = wordShl (n div WordN.wordSize, v)
+        val bitDistance = n mod WordN.wordSize
+        val mask = maskLeadingOnes bitDistance
+        val rsh = Word.fromInt (WordN.wordSize - bitDistance)
+        val bitDistance = Word.fromInt bitDistance
+        val i = ref (length v - 1)
+      in
+        if bitDistance = 0w0 then
+          ()
+        else
+          ( while (!i > 0) do
+              let
+                val w = WordN.<< (Array.sub (#bits v, !i), bitDistance)
+                val x = WordN.>>
+                  (WordN.andb (Array.sub (#bits v, !i - 1), mask), rsh)
+                val w = WordN.orb (w, x)
+              in
+                Array.update (#bits v, !i, w);
+                i := !i - 1
+              end
+          ; Array.update (#bits v, 0, WordN.<<
+              (Array.sub (#bits v, 0), bitDistance))
+          )
+      end
+
+    fun shr n (v: t) =
+      let
+        val () = wordShr (n div WordN.wordSize, v)
+        val bitDistance = n mod WordN.wordSize
+        val mask = maskTrailingOnes bitDistance
+        val lsh = Word.fromInt (WordN.wordSize - bitDistance)
+        val bitDistance = Word.fromInt bitDistance
+        val i = ref 0
+      in
+        if bitDistance = 0w0 then
+          ()
+        else
+          ( while (!i < length v - 1) do
+              let
+                val w = WordN.>> (Array.sub (#bits v, !i), bitDistance)
+                val x = WordN.<<
+                  (WordN.andb (Array.sub (#bits v, !i + 1), mask), lsh)
+                val w = WordN.orb (w, x)
+              in
+                Array.update (#bits v, !i, w);
+                i := !i + 1
+              end
+          ; Array.update (#bits v, length v - 1, WordN.>>
+              (Array.sub (#bits v, length v - 1), bitDistance))
+          )
+      end
+  end
+
   fun toString (t as {length, ...}: t) =
     let
       val result: bool list ref = ref []
