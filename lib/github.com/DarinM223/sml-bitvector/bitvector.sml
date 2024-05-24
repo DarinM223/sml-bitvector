@@ -26,6 +26,10 @@ struct
           , fn _ => zero
           )
     }
+  fun clone ({length, bits}: t) =
+    { length = length
+    , bits = Array.tabulate (Array.length bits, fn i => Array.sub (bits, i))
+    }
   fun length ({length, ...}: t) = length
   fun set i b (v: t) =
     let

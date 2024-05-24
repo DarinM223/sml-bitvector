@@ -4,6 +4,8 @@ sig
 
   (* Creates a bit vector with the given length *)
   val create: int -> t
+  (* Returns a copy of the bit vector *)
+  val clone: t -> t
   val length: t -> int
   val set: int -> bool -> t -> unit
   val setRange: int -> int -> bool -> t -> unit

@@ -112,4 +112,16 @@ val () =
          val expected = "001101000000000000"
        in
          thatEq string {expect = expected, actual = toString s}
+       end)) (title "Cloning bit vector")
+    (test (fn () =>
+       let
+         open Word8BitVector
+         val s = create 10
+         val () = set 8 true s
+         val s' = clone s
+         val () = set 6 true s
+         val () = set 4 true s'
+       in
+         thatEq string {expect = "0101000000", actual = toString s};
+         thatEq string {expect = "0100010000", actual = toString s'}
        end)) $
